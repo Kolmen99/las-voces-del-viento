@@ -1,0 +1,140 @@
+/* VARIABLES ESTÉTICAS */
+:root {
+    --color-negro: #0B0D10;
+    --color-azul: #0E1B2A;
+    --color-gris: #A7B0B5;
+    --color-verde: #3E4A3F;
+    --color-hueso: #E9E6DD;
+    
+    --font-titulo: 'Cormorant Garamond', serif;
+    --font-principal: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--color-negro);
+    color: var(--color-hueso);
+    font-family: var(--font-principal);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+.grain-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05; pointer-events: none; z-index: 9999;
+}
+
+.bitacora {
+    position: fixed; top: 30px; right: 40px;
+    background-color: rgba(14, 27, 42, 0.6); border: 1px solid rgba(167, 176, 181, 0.2);
+    padding: 10px 20px; font-size: 0.85rem; letter-spacing: 1px; color: var(--color-gris);
+    z-index: 1000; opacity: 0; transform: translateY(-10px); transition: opacity 1s ease, transform 1s ease;
+    border-radius: 2px;
+}
+.bitacora.visible { opacity: 1; transform: translateY(0); }
+.bitacora-titulo { color: var(--color-verde); font-weight: 600; text-transform: uppercase; margin-right: 5px; }
+#contador-audios { color: var(--color-hueso); font-weight: bold; }
+
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 1.5s ease-in-out, filter 1.5s ease-in-out, visibility 1.5s;
+    filter: blur(15px); padding: 20px; z-index: 1;
+}
+.screen.active { opacity: 1; visibility: visible; pointer-events: auto; filter: blur(0px); z-index: 10; }
+
+.intro-content { max-width: 650px; text-align: center; }
+.main-title { font-family: var(--font-titulo); font-size: 4rem; font-weight: 400; letter-spacing: 4px; margin-bottom: 10px; color: var(--color-hueso); text-transform: uppercase; }
+.subtitle { font-family: var(--font-principal); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 50px; font-size: 0.85rem; color: var(--color-gris); }
+.voice-echo { font-family: var(--font-titulo); font-size: 1.8rem; line-height: 1.6; color: var(--color-hueso); text-shadow: 0 0 8px rgba(233, 230, 221, 0.15); }
+.voice-echo.italic { font-style: italic; margin-bottom: 40px; }
+
+.btn-narrative {
+    background: transparent; border: 1px solid var(--color-gris); color: var(--color-hueso);
+    padding: 12px 35px; font-family: var(--font-principal); text-transform: uppercase;
+    letter-spacing: 2px; font-size: 0.85rem; cursor: pointer; transition: all 0.6s ease;
+}
+.btn-narrative:hover { background-color: var(--color-hueso); color: var(--color-negro); box-shadow: 0 0 20px rgba(233, 230, 221, 0.3); }
+
+/* BOTÓN PARA VOLVER INTERNAMENTE EN EL NODO */
+.btn-volver-interno {
+    margin-bottom: 15px;
+    font-size: 0.7rem;
+    padding: 8px 20px;
+}
+
+.map-title { font-family: var(--font-titulo); font-weight: 600; font-size: 2rem; margin-bottom: 15px; color: var(--color-gris); letter-spacing: 1px; }
+.map-container {
+    position: relative; width: 100%; max-width: 900px; height: 550px;
+    background-size: cover; background-position: center;
+    filter: grayscale(40%) sepia(15%) opacity(0.85); 
+    border: 1px solid rgba(233, 230, 221, 0.1); border-radius: 4px;
+    box-shadow: inset 0 0 100px rgba(11, 13, 16, 1); 
+}
+.map-node { position: absolute; cursor: pointer; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); z-index: 20; }
+.node-pulse {
+    width: 10px; height: 10px; background-color: var(--color-hueso); border-radius: 50%; display: block;
+    box-shadow: 0 0 10px var(--color-hueso); transition: transform 0.4s ease, background-color 0.4s ease;
+}
+.map-node:hover .node-pulse { transform: scale(1.5); background-color: var(--color-gris); box-shadow: 0 0 15px var(--color-gris); }
+.node-label { margin-top: 10px; font-size: 0.8rem; letter-spacing: 1.5px; color: var(--color-gris); font-family: var(--font-principal); text-transform: uppercase; transition: color 0.4s ease; white-space: nowrap; }
+.map-node:hover .node-label { color: var(--color-hueso); }
+
+.btn-back {
+    position: absolute; top: 40px; left: 40px; background: rgba(11, 13, 16, 0.8);
+    border: 1px solid rgba(167, 176, 181, 0.3); color: var(--color-gris); padding: 8px 16px;
+    cursor: pointer; font-family: var(--font-principal); font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 1.5px; transition: all 0.3s ease; z-index: 100;
+}
+.btn-back:hover { color: var(--color-hueso); border-color: var(--color-hueso); background-color: var(--color-azul); }
+
+.recorrido-layout { display: flex; flex-direction: column; align-items: center; max-width: 750px; text-align: center; margin-top: 40px; }
+.image-viewport { position: relative; width: 500px; max-width: 90vw; height: 50vh; margin-bottom: 25px; background-color: #000; border: 1px solid rgba(167, 176, 181, 0.15); }
+.recorrido-img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+    object-position: center bottom; /* Para que la pluma no se corte */
+    filter: grayscale(50%) contrast(105%); transition: opacity 1s ease-in-out, filter 0.8s ease;
+}
+.recorrido-img.hidden { opacity: 0; pointer-events: none; }
+.recorrido-img.visible { opacity: 1; pointer-events: auto; cursor: pointer; }
+.recorrido-img.visible:hover { filter: grayscale(10%) contrast(100%); }
+
+.view-hotspot {
+    position: absolute; width: 24px; height: 24px; background-color: rgba(233, 230, 221, 0.2);
+    border: 1px solid var(--color-hueso); border-radius: 50%; cursor: pointer;
+    transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--color-hueso);
+    animation: hotspotPulse 2s infinite ease-in-out; transition: opacity 0.5s ease; z-index: 50;
+}
+.view-hotspot.hidden { opacity: 0; pointer-events: none; }
+@keyframes hotspotPulse {
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.4; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.4; }
+}
+
+.poetic-text { font-family: var(--font-titulo); font-size: 1.6rem; font-style: italic; color: var(--color-hueso); opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out; margin-top: 25px; max-width: 600px; line-height: 1.5; }
+.poetic-text.visible { opacity: 1; transform: translateY(0); }
+.echo-container { display: flex; gap: 20px; margin-top: 15px; justify-content: center; opacity: 0; transition: opacity 2s ease; }
+.echo-container.visible { opacity: 0.6; }
+.word-echo { font-family: var(--font-titulo); font-size: 1.1rem; letter-spacing: 3px; color: var(--color-gris); text-transform: lowercase; }
+
+.fade-in-text { font-family: var(--font-titulo); font-size: 2.8rem; letter-spacing: 4px; margin-top: 25px; font-weight: 400; animation: finalFadeIn 4s forwards; }
+.btn-restart { margin-top: 50px; opacity: 0; animation: finalFadeIn 2s forwards 2.5s; }
+@keyframes finalFadeIn { from { opacity: 0; filter: blur(5px); } to { opacity: 1; filter: blur(0px); } }
+
+@media (max-width: 768px) {
+    .main-title { font-size: 2.5rem; }
+    .subtitle { font-size: 0.7rem; }
+    .voice-echo { font-size: 1.3rem; padding: 0 15px; }
+    .map-title { font-size: 1.5rem; margin-bottom: 20px; }
+    .map-container { height: 60vh; min-height: 380px; }
+    .node-label { font-size: 0.65rem; }
+    .bitacora { top: auto; bottom: 20px; right: 20px; font-size: 0.75rem; padding: 8px 12px; }
+    .btn-back { top: 20px; left: 20px; font-size: 0.7rem; padding: 6px 12px; }
+    .recorrido-layout { margin-top: 60px; }
+    .fade-in-text { font-size: 2rem; }
+}

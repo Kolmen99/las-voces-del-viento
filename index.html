@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las Voces del Viento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="grain-overlay"></div>
+
+    <div id="bitacora-progreso" class="bitacora">
+        <span class="bitacora-titulo">Bitácora:</span> 
+        <span id="contador-audios">0</span> de 4 memorias oídas
+    </div>
+
+    <audio id="audio-bg" src="assets/audio/sesion viento y mar_mezcla.mp3" loop></audio>
+    <audio id="audio-inicio" src="assets/audio/Audio-Inicio.mp3"></audio>
+
+    <section id="screen-inicio" class="screen active">
+        <div class="intro-content">
+            <h1 class="main-title">Las Voces del Viento</h1>
+            <p class="subtitle">Memoria poética e interactiva del territorio</p>
+            <button id="btn-comenzar" class="btn-narrative">Comenzar el recorrido</button>
+        </div>
+    </section>
+
+    <section id="screen-prologo" class="screen">
+        <div class="intro-content">
+            <p class="voice-echo" id="texto-prologo">
+                "Antes de la huella, existía el murmullo. El territorio no recuerda nombres, recuerda flujos. 
+                El viento es el cuerpo donde el pasado sigue respirando. Tocá la herida del paisaje. Aprendé a no ver."
+            </p>
+        </div>
+    </section>
+
+    <section id="screen-mapa" class="screen">
+        <h2 class="map-title">El territorio te escucha.</h2>
+        
+        <div class="map-container" style="background-image: url('assets/images/mapa-satelital.png');">
+            
+            <div class="map-node" data-target="cabo-domingo" style="top: 8%; left: 28%;">
+                <span class="node-pulse"></span>
+                <span class="node-label">Cabo Domingo</span>
+            </div>
+            
+            <div class="map-node" data-target="laguna-patos" style="top: 86%; left: 66%;">
+                <span class="node-pulse"></span>
+                <span class="node-label">Laguna de los Patos</span>
+            </div>
+            
+            <div class="map-node" data-target="aves" style="top: 34%; left: 44%;">
+                <span class="node-pulse"></span>
+                <span class="node-label">Avistamiento de Aves</span>
+            </div>
+            
+            <div class="map-node" data-target="punta-popper" style="top: 88%; left: 85%;">
+                <span class="node-pulse"></span>
+                <span class="node-label">Punta Popper</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="screen-recorrido" class="screen">
+        <button class="btn-back" id="btn-volver-mapa">← Volver al mapa</button>
+        <div id="recorrido-content" class="recorrido-layout">
+            </div>
+    </section>
+
+    <section id="screen-final" class="screen">
+        <div class="final-content" style="text-align: center;">
+            <p class="voice-echo italic">
+                "El territorio guarda historias. Algunas fueron contadas. Otras siguen viajando con el viento."
+            </p>
+            <h1 class="fade-in-text">Fin del recorrido.</h1>
+            <button id="btn-reiniciar" class="btn-narrative btn-restart">Iniciar un nuevo recorrido</button>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
