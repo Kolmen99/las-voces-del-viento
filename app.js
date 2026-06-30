@@ -17,7 +17,7 @@ const datosNodos = {
                 posicion: "top: 30%; left: 30%;", 
                 tipoDestino: "video",
                 mediaDestino: "assets/videos/VIDEO CABO DOMINGO.mp4",
-                audioHotspot: "assets/audio/cabo-domingo-2.mp3" // Nombre limpio y sin espacios
+                audioHotspot: "assets/audio/cabo-domingo-2.mp3" 
             }
         ],
         poesia: "«La piedra no es silencio, es un grito contenido por los siglos. Fui una gota de lluvia que cayó antes de que existieran los mapas.»",
@@ -29,21 +29,19 @@ const datosNodos = {
         mediaGeneral: "assets/images/cartel-laguna-de-los-patos.png", 
         hotspots: [
             {
-                // PUNTO ROJO (Sobre la pluma en el suelo)
-                id: "destino-laguna",
+                id: "destino-patos",
                 posicion: "top: 88%; left: 45%;", 
                 tipoDestino: "image",
-                mediaDestino: "assets/images/laguna.png"
+                mediaDestino: "assets/images/patos.png"
             },
             {
-                // PUNTO CELESTE (Sobre el agua a la derecha)
-                id: "destino-patos",
+                id: "destino-laguna",
                 posicion: "top: 45%; left: 72%;", 
                 tipoDestino: "image",
-                mediaDestino: "assets/images/patos.png"
+                mediaDestino: "assets/images/laguna.png"
             }
         ],
-        audioObjeto: "assets/audio/Audio-Laguna de los Patos.mp3", // Mantiene su audio general
+        audioObjeto: "assets/audio/Audio-Laguna de los Patos.mp3",
         poesia: "«El agua estancada sabe reflejar el cielo que el viento quiebra. Año tras año, las aves regresan siguiendo senderos invisibles.»",
         ecos: [] 
     },
@@ -60,9 +58,12 @@ const datosNodos = {
     },
     "punta-popper": {
         titulo: "Punta Popper",
-        tipo: "simple",
-        media: "assets/images/Punta Popper.png",
-        audioObjeto: "assets/audio/sesion viento y mar_mezcla.mp3", 
+        tipo: "secuencia", // Cambiado de 'simple' a 'secuencia' para soportar los dos pasos
+        mediaGeneral: "assets/images/Punta Popper.png", // Imagen inicial del cartel (Paso 1)
+        posicionHotspot: "top: 50%; left: 50%;", // Aro interactivo en el centro del paisaje
+        tipoDestino: "image",
+        mediaDestino: "assets/images/Punta-Popper-2.png", // Nueva imagen del mar/costa (Paso 2)
+        audioObjeto: "assets/audio/Audio-Punta-Popper1.mp3", // Nuevo archivo de audio asignado
         poesia: "«Doy la bienvenida a quienes llegan, pero también despido a quienes se van. Todo comienzo también es una despedida.»",
         ecos: []
     }
@@ -190,7 +191,6 @@ function cargarRecorrido(idNodo) {
                 
                 btnVolverInterno.style.display = 'inline-block';
                 
-                // LÓGICA DE AUDIO MEJORADA: Si el hotspot tiene un audio propio, usa ese. Si no, usa el del nodo.
                 const audioAAntregar = data.hotspots[index].audioHotspot ? data.hotspots[index].audioHotspot : data.audioObjeto;
                 dispararAudioNodo(idNodo, audioAAntregar);
                 
@@ -207,10 +207,12 @@ function cargarRecorrido(idNodo) {
             detail.classList.replace('hidden', 'visible');
             if (detail.tagName === 'VIDEO') detail.play();
             btnVolverInterno.style.display = 'inline-block';
-            dispararAudioNodo(idNodo, data.audioObjeto);
-            document.getElementById('texto-poetico').classList.add('visible');
-            const ecosNodo = document.getElementById('ecos-nodo');
-            if (ecosNodo) ecosNodo.classList.add('visible');
+            
+            // En Punta Popper o Avistamiento, el audio se detona al hacer clic en la imagen de detalle
+            detail.addEventListener('click', () => {
+                dispararAudioNodo(idNodo, data.audioObjeto);
+                document.getElementById('texto-poetico').classList.add('visible');
+            }, { once: true }); // Se ejecuta una sola vez por entrada
         });
     } else {
         document.getElementById('img-interactiva').addEventListener('click', () => {
